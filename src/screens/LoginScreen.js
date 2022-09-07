@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import Loading from "../components/LoadingError/Loading";
 import Toast from "../components/LoadingError/Toast";
 import { login } from "../Redux/Actions/userActions";
 import Message from "./../components/LoadingError/Error";
+import HomeScreen from "./HomeScreen";
 
-const Login = ({ history }) => {
+const Login = ({history}) => {
   window.scrollTo(0, 0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,8 +18,9 @@ const Login = ({ history }) => {
   const { error, loading, userInfo } = userLogin;
 
   useEffect(() => {
-    if (userInfo) {
-      history.push("/");
+    if(userInfo){
+      console.log('success')
+      history.push('/')
     }
   }, [userInfo, history]);
 
@@ -35,13 +38,13 @@ const Login = ({ history }) => {
         <div className="card-body">
           {error && <Message variant="alert-danger">{error}</Message>}
           {loading && <Loading />}
-          <h4 className="card-title mb-4 text-center">Sign in</h4>
+          <h4 className="card-title mb-4 text-center">Đăng Nhập Trang Quản Trị</h4>
           <form onSubmit={submitHandler}>
             <div className="mb-3">
               <input
                 className="form-control"
-                placeholder="Email"
-                type="email"
+                placeholder="Tài khoản"
+                type="str"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -49,7 +52,7 @@ const Login = ({ history }) => {
             <div className="mb-3">
               <input
                 className="form-control"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -58,7 +61,7 @@ const Login = ({ history }) => {
 
             <div className="mb-4">
               <button type="submit" className="btn btn-primary w-100">
-                Login
+                Đăng Nhập
               </button>
             </div>
           </form>
