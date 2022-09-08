@@ -9,6 +9,7 @@ import UsersScreen from "./screens/UsersScreen";
 import NotFound from "./screens/NotFound";
 import PrivateRouter from "./PrivateRouter";
 import { useDispatch, useSelector } from "react-redux";
+import ProductScreen from "./screens/productScreen";
 function App() {
   const dispatch = useDispatch();
 
@@ -24,6 +25,9 @@ function App() {
     <>
       <Router>
         <Switch>
+          <Route path="/search/:keyword" component={ProductScreen} exact />
+          <Route path="/page/:pagenumber" component={ProductScreen} exact />
+          <PrivateRouter path="/products" component={ProductScreen} />
           <PrivateRouter path="/" component={HomeScreen} exact />
           <PrivateRouter path="/users" component={UsersScreen} />
           <Route path="/login" component={Login} />
