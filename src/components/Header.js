@@ -86,7 +86,7 @@ const Header = () => {
             </Link>
             <div className="dropdown-menu dropdown-menu-end">
               <Link className="dropdown-item" to="/">
-                Thông tin cửa hàng
+                Thông tin thống kê
               </Link>
               <Link className="dropdown-item" to="#">
                 Cài đặt
@@ -96,7 +96,7 @@ const Header = () => {
                 className="dropdown-item text-danger"
                 to="#"
               >
-                Thoát
+                Đăng xuất
               </Link>
             </div>
           </li>

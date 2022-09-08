@@ -37,17 +37,17 @@ const UserComponent = () => {
             </div>
             <div className="col-lg-2 col-6 col-md-3">
               <select className="form-select">
-                <option>Show 20</option>
-                <option>Show 30</option>
-                <option>Show 40</option>
-                <option>Show all</option>
+                <option>Hiển thị 20</option>
+                <option>Hiển thị 30</option>
+                <option>Hiển thị 40</option>
+                <option>Hiển thị tất cả</option>
               </select>
             </div>
             <div className="col-lg-2 col-6 col-md-3">
               <select className="form-select">
-                <option>Status: all</option>
-                <option>Active only</option>
-                <option>Disabled</option>
+                <option>Tình trạng: Tất cả</option>
+                <option>Đã kích hoạt</option>
+                <option>Đã ngừng kích hoạt</option>
               </select>
             </div>
           </div>
@@ -61,24 +61,32 @@ const UserComponent = () => {
             <Message variant="alert-danger">{error}</Message>
           ) : (
             <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
-              {users.map((user) => (
+              {users.users.map((user) => (
                 <div className="col" key={user._id}>
                   <div className="card card-user shadow-sm">
                     <div className="card-header">
                       <img
                         className="img-md img-avatar"
-                        src="images/favicon.png"
+                        src={user.avatar}
                         alt="User pic"
                       />
                     </div>
                     <div className="card-body">
                       <h5 className="card-title mt-5">{user.name}</h5>
                       <div className="card-text text-muted">
-                        {user.isAdmin === true ? (
-                          <p className="m-0">Admin</p>
-                        ) : (
+                        {user.role === "admin" ? (
+                          <p className="m-0">Quản trị</p>
+                        ) : (user.role === "owners" ? (
                           <p className="m-0">Khách hàng</p>
+                        ) :
+                          (
+                            <p className="m-0">Người dùng</p>
+                          )
                         )}
+
+                        <p className="m-0">
+                            {user.last_name +' '+ user.first_name}
+                        </p>
 
                         <p>
                           <a href={`mailto:${user.email}`}>{user.email}</a>
@@ -96,7 +104,7 @@ const UserComponent = () => {
             <ul className="pagination">
               <li className="page-item disabled">
                 <Link className="page-link" to="#">
-                  Previous
+                  Trước
                 </Link>
               </li>
               <li className="page-item active">
@@ -106,7 +114,7 @@ const UserComponent = () => {
               </li>
               <li className="page-item">
                 <Link className="page-link" to="#">
-                  Next
+                  Sau
                 </Link>
               </li>
             </ul>

@@ -83,7 +83,7 @@ export const logout = () => (dispatch) => {
 };
 
 // ALL USER
-export const listUser = () => async (dispatch, getState) => {
+export const listUser = (limit = 1000, page = 2) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
 
@@ -91,14 +91,20 @@ export const listUser = () => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-      baseURL: 'https://smart-fooding.herokuapp.com'
-    };
+    var data;
 
-    const { data } = await axios.get(`/api/users`, config).then(res => console.log(res.data));
+    await axios.get(
+      `/api/users?limit=${limit}&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        baseURL: 'https://smart-fooding.herokuapp.com'
+      } 
+    )
+    .then(res => data = res.data);
     console.log(data)
 
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
