@@ -1,7 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Main = () => {
-
   return (
     <>
       <section className="content-main">

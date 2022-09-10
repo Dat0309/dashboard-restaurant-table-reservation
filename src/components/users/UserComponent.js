@@ -59,7 +59,7 @@ const UserComponent = () => {
             <Loading />
           ) : error ? (
             <Message variant="alert-danger">{error}</Message>
-          ) : (
+          ) : users.users? (
             <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
               {users.users.map((user) => (
                 <div className="col" key={user._id}>
@@ -97,6 +97,8 @@ const UserComponent = () => {
                 </div>
               ))}
             </div>
+          ): (
+            <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng làm mới lại trang</Message>
           )}
 
           {/* nav */}

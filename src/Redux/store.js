@@ -11,6 +11,7 @@ import {
   productUpdateReducer,
 } from "./Reducers/ProductReducers";
 import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryEditReducer, categoryListReducer, categoryUpdateReducer } from "./Reducers/CategoryReducers";
+import { restaurantCreateReducer, restaurantDeleteReducer, restaurantEditReducer, restaurantListByCategoryIdReducer, restaurantListReducer, restaurantUpdateReducer } from "./Reducers/RestaurantReducer";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -27,6 +28,12 @@ const reducer = combineReducers({
   categoryCreate: categoryCreateReducer,
   categoryEdit: categoryEditReducer,
   categoryUpdate: categoryUpdateReducer,
+  restaurantList: restaurantListReducer,
+  restaurantByCategortId: restaurantListByCategoryIdReducer,
+  restaurantDelete: restaurantDeleteReducer,
+  restaurantCreate: restaurantCreateReducer,
+  restaurantEdit: restaurantEditReducer,
+  restaurantUpdate: restaurantUpdateReducer,
 });
 
 // login

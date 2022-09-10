@@ -18,7 +18,7 @@ const MainProducts = (props) => {
   const { loadingCate, errorCate, categories } = categoriesList;
 
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products} = productList;
+  const { loading, error, products } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
   const { error: errorDelete, success: successDelete } = productDelete;
@@ -72,13 +72,15 @@ const MainProducts = (props) => {
                   </div>
                 ) : errorCate ? (
                   <Message variant="alert-danger">{error}</Message>
-                ) : (
+                ) : categories ? (
                   <>
                     <option>Chọn loại mặt hàng</option>
-                    {/* {categories.map((category) => (
-                      <option value={category._id}>{category.categoryName}</option>
-                    ))} */}
+                    {categories.map((category) => (
+                      <option value={category._id}>{category.name}</option>
+                    ))}
                   </>
+                ) : (
+                  <Message variant="alert-danger">Đã xảy ra lỗi, xin hãy tải lại trang</Message>
                 )}
               </select>
             </div>
@@ -86,7 +88,7 @@ const MainProducts = (props) => {
               <select className="form-select">
                 <option>Mới nhất</option>
                 <option>Rẻ nhất</option>
-                <option>Nhiều lượt xem</option>
+                <option>Nhiều lượt mua</option>
               </select>
             </div>
           </div>
@@ -100,13 +102,15 @@ const MainProducts = (props) => {
             <Loading />
           ) : error ? (
             <Message variant="alert-danger">{error}</Message>
-          ) : (
+          ) : products.products ? (
             <div className="row">
               {/* Products */}
               {products.products.map((product) => (
                 <Product product={product} key={product._id} />
               ))}
             </div>
+          ) : (
+            <Message variant="alert-danger">Đã xảy ra lỗi, xin hãy tải lại trang</Message>
           )}
 
           {/* <nav className="float-end mt-4" aria-label="Page navigation">

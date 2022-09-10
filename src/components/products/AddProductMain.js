@@ -7,6 +7,8 @@ import { createProduct } from "./../../Redux/Actions/ProductActions";
 import Toast from "../LoadingError/Toast";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
+import { listCategories } from "../../Redux/Actions/CategoryActions";
+import { listRestaurant } from "../../Redux/Actions/RestaurantActions";
 
 const ToastObjects = {
   pauseOnFocusLoss: false,
@@ -16,38 +18,43 @@ const ToastObjects = {
 };
 const AddProductMain = () => {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories_id, setCategory] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
-  const [imageBanner, setImageBanner] = useState("");
-  const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [unit, setUnit] = useState("");
+  const [menu_id, setRestaurat] = useState("")
 
   const dispatch = useDispatch();
 
   const categoriesList = useSelector((state) => state.categoriesList);
   const { loadingCate, errorCate, categories } = categoriesList;
 
+  const restaurantList = useSelector((state) => state.restaurantList);
+  const { loadingRestaurant, errorRestaurant, restaurants } = restaurantList;
+
   const productCreate = useSelector((state) => state.productCreate);
   const { loading, error, product } = productCreate;
 
   useEffect(() => {
+    dispatch(listCategories());
+    dispatch(listRestaurant());
     if (product) {
-      toast.success("Product Added", ToastObjects);
+      toast.success("Thêm sản phẩm thành công", ToastObjects);
       dispatch({ type: PRODUCT_CREATE_RESET });
       setName("");
       setCategory("");
       setDescription("");
-      setCountInStock(0);
+      setUnit("");
       setImage("");
-      setImageBanner("");
+      setRestaurat("");
       setPrice(0);
     }
   }, [product, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProduct(name, category, price, description, image, imageBanner, countInStock));
+    dispatch(createProduct(name, categories_id, price, description, image, unit, menu_id));
   };
 
   return (
@@ -75,7 +82,7 @@ const AddProductMain = () => {
                   {loading && <Loading />}
                   <div className="mb-4">
                     <label htmlFor="product_title" className="form-label">
-                      Tên mặt hàng
+                      Tên món ăn
                     </label>
                     <input
                       type="text"
@@ -93,7 +100,7 @@ const AddProductMain = () => {
                     </label>
                     <select className="form-select"
                       onChange={(e) => setCategory(e.target.value)}
-                      value={category}
+                      value={categories_id}
                       id="product_category">
                       {loadingCate ? (
                         <div className='mb-5'>
@@ -101,15 +108,45 @@ const AddProductMain = () => {
                         </div>
                       ) : errorCate ? (
                         <Message variant="alert-danger">{error}</Message>
-                      ) : (
+                      ) : categories ? (
                         <>
                           <option>Chọn loại mặt hàng</option>
                           {categories.map((category) => (
                             <option value={category._id}>
-                              {category.categoryName}
+                              {category.name}
                             </option>
                           ))}
                         </>
+                      ) : (
+                        <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng tải lại trang</Message>
+                      )}
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="product_restaurant" className="form-label">
+                      Nhà hàng
+                    </label>
+                    <select className="form-select"
+                      onChange={(e) => setRestaurat(e.target.value)}
+                      value={menu_id}
+                      id="product_restaurant">
+                      {loadingRestaurant ? (
+                        <div className='mb-5'>
+                          <Loading />
+                        </div>
+                      ) : errorRestaurant ? (
+                        <Message variant="alert-danger">{error}</Message>
+                      ) : restaurants.restaurant ? (
+                        <>
+                          <option>Chọn tên nhà hàng</option>
+                          {restaurants.restaurant.map((restaurant) => (
+                            <option value={restaurant._id}>
+                              {restaurant.name}
+                            </option>
+                          ))}
+                        </>
+                      ) : (
+                        <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng tải lại trang</Message>
                       )}
                     </select>
                   </div>
@@ -128,17 +165,17 @@ const AddProductMain = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="product_price" className="form-label">
-                      Số lượng trong kho
+                    <label htmlFor="product_unit" className="form-label">
+                      Đơn vị tính
                     </label>
                     <input
-                      type="number"
-                      placeholder="Thêm số lượng"
+                      type="text"
+                      placeholder="Đơn vị tính (vd: Đĩa, chén, nồi, xoong,...)"
                       className="form-control"
-                      id="product_price"
+                      id="product_unit"
                       required
-                      value={countInStock}
-                      onChange={(e) => setCountInStock(e.target.value)}
+                      value={unit}
+                      onChange={(e) => setUnit(e.target.value)}
                     />
                   </div>
                   <div className="mb-4">
@@ -161,18 +198,6 @@ const AddProductMain = () => {
                       value={image}
                       required
                       onChange={(e) => setImage(e.target.value)}
-                    />
-                    <input className="form-control mt-3" type="file" />
-                  </div>
-                  <div className="mb-4">
-                    <label className="form-label">Ảnh bìa</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      placeholder="URL Hình ảnh"
-                      value={imageBanner}
-                      required
-                      onChange={(e) => setImageBanner(e.target.value)}
                     />
                     <input className="form-control mt-3" type="file" />
                   </div>
