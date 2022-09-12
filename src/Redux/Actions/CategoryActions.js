@@ -106,7 +106,7 @@ export const deleteCategories = (id) => async (dispatch, getState) => {
 
 // CREATE CATEGORY
 export const createCategory =
-  (categoryName, description, thumb) =>
+  (name, thumb) =>
     async (dispatch, getState) => {
       try {
         dispatch({ type: CATEGORY_CREATE_REQUEST });
@@ -115,11 +115,16 @@ export const createCategory =
           userLogin: { userInfo },
         } = getState();
 
+        const cateData = {
+          name: name,
+          image: thumb
+        }
+
         var data;
 
         await axios.post(
-          `/api/categories/`,
-          { categoryName, description, thumb },
+          `/api/categories`,
+          cateData,
           {
             headers: {
               Authorization: `Bearer ${userInfo.token}`,
