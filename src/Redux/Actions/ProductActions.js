@@ -64,7 +64,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
     } = getState();
 
     await axios.delete(
-      `/api/products/${id}`, 
+      `/api/product/${id}`, 
       {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
@@ -147,14 +147,14 @@ export const editProduct = (id) => async (dispatch) => {
     dispatch({ type: PRODUCT_EDIT_REQUEST });
     var data;
     await axios.get(
-      `/api/products/${id}`,
+      `/api/product/${id}`,
       {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         baseURL: 'https://smart-fooding.herokuapp.com'
-      }).then(res=>res.data);
+      }).then(res=>data = res.data);
     dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -183,7 +183,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     var data;
 
     await axios.put(
-      `/api/products/${product._id}`,
+      `/api/product/${product._id}`,
       product,
       {
         headers: {

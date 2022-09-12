@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
 import { categoryDetails, listCategories } from "../../Redux/Actions/CategoryActions";
-import { listDiscounts } from "../../Redux/Actions/DiscountActions";
 
 const ToastObjects = {
   pauseOnFocusLoss: false,
@@ -24,13 +23,12 @@ const EditProductMain = (props) => {
   const { productId } = props;
 
   const [name, setName] = useState("");
-  const [categoryID, setCategoryID] = useState("");
+  const [categories_id, setCategoryID] = useState("");
+  const [menu_id, setMenu_id] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
-  const [imageBanner, setImageBanner] = useState("");
-  const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
-  const [discountID, setDiscountID] = useState("");
+  const [unit, setUnit] = useState("");
 
   const dispatch = useDispatch();
 
@@ -43,9 +41,6 @@ const EditProductMain = (props) => {
   const categoryDetail = useSelector((state) => state.categoryDetail);
   const { loadingCateDetail, errorCateDetail, category } = categoryDetail;
 
-  const discountList = useSelector((state) => state.discountList);
-  const { loadingDis, errorDis, discounts } = discountList;
-
   const productUpdate = useSelector((state) => state.productUpdate);
   const {
     loading: loadingUpdate,
@@ -55,40 +50,39 @@ const EditProductMain = (props) => {
 
   useEffect(() => {
     dispatch(listCategories());
-    dispatch(listDiscounts());
+
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       toast.success("Product Updated", ToastObjects);
     } else {
       if (!product.name || product._id !== productId) {
+        console.log("cant get product");
         dispatch(editProduct(productId));
       } else {
         setName(product.name);
-        setCategoryID(product.categoryId);
+        setCategoryID(product.categories_id);
         setDescription(product.description);
-        setCountInStock(product.countInStock);
+        setMenu_id(product.menu_id);
         setImage(product.image);
-        setImageBanner(product.imageBanner);
         setPrice(product.price);
-        setDiscountID(product.discount);
+        setUnit(product.unit);
       }
+      dispatch(categoryDetails(categories_id));
     }
-    dispatch(categoryDetails(categoryID));
-  }, [product, dispatch, productId, successUpdate, categoryID]);
+  }, [product, dispatch, productId, successUpdate, categories_id, menu_id]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
       updateProduct({
         _id: productId,
-        name,
-        categoryID,
-        image,
-        imageBanner,
-        description,
-        price,
-        countInStock,
-        discountID,
+        name: name,
+        categories_id: categories_id,
+        image: image,
+        menu_id: menu_id,
+        description: description,
+        price: price,
+        unit: unit,
       })
     );
   };
@@ -102,7 +96,7 @@ const EditProductMain = (props) => {
             <Link to="/products" className="btn btn-danger text-white">
               Quay lại trang quản lý
             </Link>
-            <h2 className="content-title">Chỉnh sửa mặt hàng</h2>
+            <h2 className="content-title">Chỉnh sửa món ăn</h2>
             <div>
               <button type="submit" className="btn btn-primary">
                 Lưu
@@ -126,7 +120,7 @@ const EditProductMain = (props) => {
                     <>
                       <div className="mb-4">
                         <label htmlFor="product_title" className="form-label">
-                          Tên mặt hàng
+                          Tên món ăn
                         </label>
                         <input
                           type="text"
@@ -140,11 +134,11 @@ const EditProductMain = (props) => {
                       </div>
                       <div className="mb-4">
                         <label htmlFor="product_category" className="form-label">
-                          Loại mặt hàng
+                          Loại món ăn
                         </label>
                         <select className="form-select"
                           onChange={(e) => setCategoryID(e.target.value)}
-                          value={category.categoryName}
+                          value={category.name}
                           id="product_category">
                           {(loadingCate && loadingCateDetail) ? (
                             <div className='mb-5'>
@@ -154,10 +148,10 @@ const EditProductMain = (props) => {
                             <Message variant="alert-danger">{error}</Message>
                           ) : (
                             <>
-                              <option>{category.categoryName}</option>
+                              <option>{category.name}</option>
                               {categories.map((categoryState) => (
                                 <option value={categoryState._id}>
-                                  {categoryState.categoryName}
+                                  {categoryState.name}
                                 </option>
                               ))}
                             </>
@@ -179,19 +173,20 @@ const EditProductMain = (props) => {
                         />
                       </div>
                       <div className="mb-4">
-                        <label htmlFor="product_price" className="form-label">
-                          Số lượng trong kho
+                        <label htmlFor="product_unit" className="form-label">
+                          Đơn vị tính
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           placeholder="Type here"
                           className="form-control"
-                          id="product_price"
+                          id="product_unit"
                           required
-                          value={countInStock}
-                          onChange={(e) => setCountInStock(e.target.value)}
+                          value={unit}
+                          onChange={(e) => setUnit(e.target.value)}
                         />
                       </div>
+
                       <div className="mb-4">
                         <label className="form-label">Mô tả</label>
                         <textarea
@@ -208,46 +203,12 @@ const EditProductMain = (props) => {
                         <input
                           className="form-control"
                           type="text"
+                          placeholder="URL Hình ảnh"
                           value={image}
                           required
                           onChange={(e) => setImage(e.target.value)}
                         />
-                      </div>
-                      <div className="mb-4">
-                        <label className="form-label">Ảnh bìa</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          value={imageBanner}
-                          required
-                          onChange={(e) => setImageBanner(e.target.value)}
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <label htmlFor="product_dicount" className="form-label">
-                          Chương trình giảm giá
-                        </label>
-                        <select className="form-select"
-                          onChange={(e) => setDiscountID(e.target.value)}
-                          value={discountID}
-                          id="product_category">
-                          {(loadingDis && loading && loadingCate) ? (
-                            <div className='mb-5'>
-                              <Loading />
-                            </div>
-                          ) : (errorDis || error) ? (
-                            <Message variant="alert-danger">{error}</Message>
-                          ) : (
-                            <>
-                              {/* <option>{category.categoryName}</option> */}
-                              {discounts.map((discountState) => (
-                                <option value={discountState._id}>
-                                  {discountState.name}
-                                </option>
-                              ))}
-                            </>
-                          )}
-                        </select>
+                        <input className="form-control mt-3" type="file"/>
                       </div>
                     </>
                   )}

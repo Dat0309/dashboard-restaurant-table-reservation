@@ -55,6 +55,8 @@ export const categoryDetails = (id) => async (dispatch) => {
         baseURL: 'https://smart-fooding.herokuapp.com'
       }
       ).then(res => data=res.data);
+      console.log(data);
+      
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

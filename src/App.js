@@ -13,6 +13,7 @@ import ProductScreen from "./screens/productScreen";
 import AddProduct from "./screens/AddProduct";
 import CategoriesScreen from "./screens/CategoriesScreen";
 import CategoryEditScreen from "./screens/CategoryEditScreen";
+import ProductEditScreen from "./screens/ProductEditScreen";
 function App() {
   const dispatch = useDispatch();
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/search/:keyword" component={ProductScreen} exact />
           <Route path="/page/:pagenumber" component={ProductScreen} exact />
           <PrivateRouter path="/products" component={ProductScreen} />
+          <PrivateRouter path="/product/:id/edit" component={ProductEditScreen} />
           <PrivateRouter path="/categories" component={CategoriesScreen} />
           <PrivateRouter path="/category/:id/edit" component={CategoryEditScreen} />
           <PrivateRouter path="/addproduct" component={AddProduct} />
