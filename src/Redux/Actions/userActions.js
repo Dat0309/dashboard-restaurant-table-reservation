@@ -7,6 +7,15 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
+  USER_CREATE_FAIL,
+  USER_CREATE_REQUEST,
+  USER_CREATE_SUCCESS,
+  USER_EDIT_FAIL,
+  USER_EDIT_REQUEST,
+  USER_EDIT_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
 } from "../Constants/UserContants";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -118,6 +127,137 @@ export const listUser = (limit = 1000, page = 2) => async (dispatch, getState) =
     }
     dispatch({
       type: USER_LIST_FAIL,
+      payload: message,
+    });
+  }
+};
+
+// CREATE USER
+export const createUser =
+  (first_name, last_name, email, phone_number, username, password, avatar, thumb, province, district, ward,
+    street, longitude, latitude, role) =>
+    async (dispatch, getState) => {
+      try {
+        dispatch({ type: USER_CREATE_REQUEST });
+
+        const {
+          userLogin: { userInfo },
+        } = getState();
+
+        var userData = {
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          phone_number: phone_number,
+          username: username,
+          password: password,
+          avatar: avatar,
+          thumb: thumb,
+          province: province,
+          district: district,
+          ward: ward,
+          street: street,
+          longitude: longitude,
+          latitude: latitude,
+          role: role
+        };
+        var data;
+
+        await axios.post(
+          `/api/users`,
+          userData,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            baseURL: 'https://smart-fooding.herokuapp.com'
+          }
+        ).then(res=> data = res.data);
+
+        dispatch({ type: USER_CREATE_SUCCESS, payload: data });
+      } catch (error) {
+        const message =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+        if (message === "Not authorized, token failed") {
+          dispatch(logout());
+        }
+        dispatch({
+          type: USER_CREATE_FAIL,
+          payload: message,
+        });
+      }
+    };
+
+// EDIT USER
+export const editUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_EDIT_REQUEST });
+    var data;
+    await axios.get(
+      `/api/users/${id}`,
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        baseURL: 'https://smart-fooding.herokuapp.com'
+      }).then(res=>data = res.data);
+    dispatch({ type: USER_EDIT_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: USER_EDIT_FAIL,
+      payload: message,
+    });
+  }
+};
+
+// UPDATE USER
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    var data;
+
+    await axios.put(
+      `/api/users/${user._id}`,
+      user,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        baseURL: 'https://smart-fooding.herokuapp.com'
+      }
+    ).then(res=>data = res.data);
+
+    dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+    dispatch({ type: USER_EDIT_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload: message,
     });
   }
