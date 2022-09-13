@@ -55,14 +55,14 @@ const EditUserMain = (props) => {
             dispatch({ type: USER_UPDATE_RESET });
             toast.success("User Updated", ToastObjects);
         } else {
-            if (!user.name || user._id !== userId) {
+            if (!user.first_name || user._id !== userId) {
                 console.log("cant get user");
                 dispatch(editUser(userId));
             } else {
-                setFirstName(user.firstName);
-                setLastName(user.lastName);
+                setFirstName(user.first_name);
+                setLastName(user.last_name);
                 setEmail(user.email);
-                setPhoneNumber(user.phoneNumber);
+                setPhoneNumber(user.phone_number);
                 setUsername(user.username);
                 setPassword(user.password);
                 setAvatar(user.avatar);
@@ -311,7 +311,6 @@ const EditUserMain = (props) => {
                                                     onChange={(e) => setLatitude(e.target.value)}
                                                 />
                                             </div>
-
                                             <div className="mb-4">
                                                 <label htmlFor="user_role" className="form-label">
                                                     Quyền người dùng
@@ -321,14 +320,12 @@ const EditUserMain = (props) => {
                                                     value={role}
                                                     id="user_role">
                                                     <>
-                                                        <option value='Quản trị viên'>Quản trị viên</option>
-                                                        <option value='Khách hàng'>Khách hàng</option>
-                                                        <option value='Người dùng'>Người dùng</option>
+                                                        <option value='admin'>Quản trị viên</option>
+                                                        <option value='owners'>Khách hàng</option>
+                                                        <option value='guest'>Người dùng</option>
                                                     </>
-
                                                 </select>
                                             </div>
-
                                         </>
                                     )}
                                 </div>

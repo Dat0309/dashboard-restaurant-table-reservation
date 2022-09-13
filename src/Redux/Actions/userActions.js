@@ -100,6 +100,8 @@ export const listUser = (limit = 1000, page = 2) => async (dispatch, getState) =
       userLogin: { userInfo },
     } = getState();
 
+    console.log(userInfo.token);
+
     var data;
 
     await axios.get(
@@ -193,14 +195,20 @@ export const createUser =
     };
 
 // EDIT USER
-export const editUser = (id) => async (dispatch) => {
+export const editUser = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_EDIT_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     var data;
     await axios.get(
       `/api/users/${id}`,
       {
         headers: {
+          Authorization: `Bearer ${userInfo.token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
@@ -230,6 +238,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     const {
       userLogin: { userInfo },
     } = getState();
+
 
     var data;
 

@@ -14,6 +14,7 @@ const UserComponent = () => {
   useEffect(() => {
     dispatch(listUser());
   }, [dispatch]);
+
   return (
     <section className="content-main">
       <div className="content-header">
@@ -59,45 +60,49 @@ const UserComponent = () => {
             <Loading />
           ) : error ? (
             <Message variant="alert-danger">{error}</Message>
-          ) : users.users? (
+          ) : users.users ? (
             <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
               {users.users.map((user) => (
-                <div className="col" key={user._id}>
-                  <div className="card card-user shadow-sm">
-                    <div className="card-header">
-                      <img
-                        className="img-md img-avatar"
-                        src={user.avatar}
-                        alt="User pic"
-                      />
-                    </div>
-                    <div className="card-body">
-                      <h5 className="card-title mt-5">{user.name}</h5>
-                      <div className="card-text text-muted">
-                        {user.role === "admin" ? (
-                          <p className="m-0">Quản trị</p>
-                        ) : (user.role === "owners" ? (
-                          <p className="m-0">Khách hàng</p>
-                        ) :
-                          (
-                            <p className="m-0">Người dùng</p>
-                          )
-                        )}
+                <div className="col" key={user._id} >
+                  <Link
+                    to={`/user/${user._id}/edit`}>
 
-                        <p className="m-0">
-                            {user.last_name +' '+ user.first_name}
-                        </p>
+                    <div className="card card-user shadow-sm">
+                      <div className="card-header">
+                        <img
+                          className="img-md img-avatar"
+                          src={user.avatar}
+                          alt="User pic"
+                        />
+                      </div>
+                      <div className="card-body">
+                        <h5 className="card-title mt-5">{user.name}</h5>
+                        <div className="card-text text-muted">
+                          {user.role === "admin" ? (
+                            <p className="m-0">Quản trị</p>
+                          ) : (user.role === "owners" ? (
+                            <p className="m-0">Khách hàng</p>
+                          ) :
+                            (
+                              <p className="m-0">Người dùng</p>
+                            )
+                          )}
 
-                        <p>
-                          <a href={`mailto:${user.email}`}>{user.email}</a>
-                        </p>
+                          <p className="m-0">
+                            {user.last_name + ' ' + user.first_name}
+                          </p>
+
+                          <p>
+                            <a href={`mailto:${user.email}`}>{user.email}</a>
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ))}
             </div>
-          ): (
+          ) : (
             <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng làm mới lại trang</Message>
           )}
 
