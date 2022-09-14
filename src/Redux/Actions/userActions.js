@@ -136,7 +136,7 @@ export const listUser = (limit = 1000, page = 2) => async (dispatch, getState) =
 
 // CREATE USER
 export const createUser =
-  (first_name, last_name, email, phone_number, username, password, avatar, thumb, province, district, ward,
+  (first_name, last_name, email, phone_number, username, avatar, thumb, province, district, ward,
     street, longitude, latitude, role) =>
     async (dispatch, getState) => {
       try {
@@ -152,7 +152,7 @@ export const createUser =
           email: email,
           phone_number: phone_number,
           username: username,
-          password: password,
+          password: '123456',
           avatar: avatar,
           thumb: thumb,
           province: province,
@@ -163,6 +163,7 @@ export const createUser =
           latitude: latitude,
           role: role
         };
+        console.log(userData);
         var data;
 
         await axios.post(

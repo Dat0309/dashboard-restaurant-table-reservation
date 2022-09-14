@@ -20,7 +20,7 @@ const UserComponent = () => {
       <div className="content-header">
         <h2 className="content-title">QUẢN LÝ NGƯỜI DÙNG</h2>
         <div>
-          <Link to="#" className="btn btn-primary">
+          <Link to="/adduser" className="btn btn-primary">
             <i className="material-icons md-plus"></i> Tạo mới
           </Link>
         </div>
@@ -79,12 +79,12 @@ const UserComponent = () => {
                         <h5 className="card-title mt-5">{user.name}</h5>
                         <div className="card-text text-muted">
                           {user.role === "admin" ? (
-                            <p className="m-0">Quản trị</p>
+                            <p className="m-0">Quyền: Quản trị</p>
                           ) : (user.role === "owners" ? (
-                            <p className="m-0">Khách hàng</p>
+                            <p className="m-0">Quyền: Khách hàng</p>
                           ) :
                             (
-                              <p className="m-0">Người dùng</p>
+                              <p className="m-0">Quyền: Người dùng</p>
                             )
                           )}
 

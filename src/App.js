@@ -17,6 +17,7 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderDetailScreen from "./screens/OrderDetailScreen";
 import UserEditScreen from "./screens/UserEditScreen";
+import AddUser from "./screens/AddUser";
 function App() {
   const dispatch = useDispatch();
 
@@ -44,6 +45,7 @@ function App() {
           <PrivateRouter path="/" component={HomeScreen} exact />
           <PrivateRouter path="/users" component={UsersScreen} />
           <PrivateRouter path="/user/:id/edit" component={UserEditScreen} />
+          <PrivateRouter path="/adduser" component={AddUser} />
           <Route path="/login" component={Login} />
           <PrivateRouter path="*" component={NotFound} />
         </Switch>
