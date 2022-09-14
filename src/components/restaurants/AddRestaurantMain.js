@@ -27,6 +27,9 @@ const AddRestaurantMain = () => {
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
 
+  const [images, setImages] = useState([]);
+  const [thumbs, setThumbs] = useState([]);
+
 
   const dispatch = useDispatch();
 
@@ -50,6 +53,34 @@ const AddRestaurantMain = () => {
       setLatitude("");
     }
   }, [restaurant, dispatch]);
+
+  function handleOpenWidget() {
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'devdaz',
+      uploadPreset: 'mm9z4p5u'
+    }, (error, result) => {
+      if (!error && result && result.event === "success") {
+        setImages((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
+        setImage(result.info.url);
+      }
+    });
+    //open widget
+    myWidget.open();
+  }
+
+  function handleOpenWidgetThumb() {
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'devdaz',
+      uploadPreset: 'mm9z4p5u'
+    }, (error, result) => {
+      if (!error && result && result.event === "success") {
+        setThumbs((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
+        setThumb(result.info.url);
+      }
+    });
+    //open widget
+    myWidget.open();
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -185,7 +216,14 @@ const AddRestaurantMain = () => {
                       required
                       onChange={(e) => setImage(e.target.value)}
                     />
-                    <input className="form-control mt-3" type="file" />
+                    <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidget()}>Upload files</button>
+                    <div className="card card-product-grid shadow-sm">
+                      {images.map((img) => (
+                        <div>
+                          <img alt="avatar" src={img.url} height={300} width={300} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   <div className="mb-4">
                     <label className="form-label">Ảnh bìa</label>
@@ -197,7 +235,14 @@ const AddRestaurantMain = () => {
                       required
                       onChange={(e) => setThumb(e.target.value)}
                     />
-                    <input className="form-control mt-3" type="file" />
+                    <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidgetThumb()}>Upload files</button>
+                    <div className="card card-product-grid shadow-sm">
+                      {thumbs.map((img) => (
+                        <div>
+                          <img alt="thumb" src={img.url} height={300} width={600} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   <div className="mb-4">
                     <label htmlFor="restaurant_longitude" className="form-label">

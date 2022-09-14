@@ -34,6 +34,9 @@ const EditRestaurantMain = (props) => {
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
 
+  const [images, setImages] = useState([]);
+  const [thumbs, setThumbs] = useState([]);
+
   const dispatch = useDispatch();
 
   const restaurantEdit = useSelector((state) => state.restaurantEdit);
@@ -69,6 +72,34 @@ const EditRestaurantMain = (props) => {
       }
     }
   }, [restaurant, dispatch, restaurantId, successUpdate]);
+
+  function handleOpenWidget() {
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'devdaz',
+      uploadPreset: 'mm9z4p5u'
+    }, (error, result) => {
+      if (!error && result && result.event === "success") {
+        setImages((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
+        setImage(result.info.url);
+      }
+    });
+    //open widget
+    myWidget.open();
+  }
+
+  function handleOpenWidgetThumb() {
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'devdaz',
+      uploadPreset: 'mm9z4p5u'
+    }, (error, result) => {
+      if (!error && result && result.event === "success") {
+        setThumbs((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
+        setThumb(result.info.url);
+      }
+    });
+    //open widget
+    myWidget.open();
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -227,7 +258,12 @@ const EditRestaurantMain = (props) => {
                           required
                           onChange={(e) => setImage(e.target.value)}
                         />
-                        <input className="form-control mt-3" type="file" />
+                        <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidget()}>Upload files</button>
+                        <div className="card card-product-grid shadow-sm">
+                          <div>
+                            <img alt="thumb" src={image} height={300} width={600} />
+                          </div>
+                        </div>
                       </div>
                       <div className="mb-4">
                         <label className="form-label">Ảnh bìa</label>
@@ -239,36 +275,44 @@ const EditRestaurantMain = (props) => {
                           required
                           onChange={(e) => setThumb(e.target.value)}
                         />
-                        <input className="form-control mt-3" type="file" />
+                        <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidgetThumb()}>Upload files</button>
+                        <div className="card card-product-grid shadow-sm" style={{display: "flex"}}>
+                          {thumb.split(',').map((img) => (
+                            <div>
+                              <img alt="thumb" src={img} height={300} width={600} />
+                            </div>
+                          ))}
+
+                        </div>
                       </div>
                       <div className="mb-4">
-                                        <label htmlFor="user_longitude" className="form-label">
-                                            Kinh độ
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Nhập kinh độ"
-                                            className="form-control"
-                                            id="user_longitude"
-                                            required
-                                            value={longitude}
-                                            onChange={(e) => setLongitude(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="user_latitude" className="form-label">
-                                            Vĩ độ
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Nhập vĩ độ"
-                                            className="form-control"
-                                            id="user_latitude"
-                                            required
-                                            value={latitude}
-                                            onChange={(e) => setLatitude(e.target.value)}
-                                        />
-                                    </div>
+                        <label htmlFor="user_longitude" className="form-label">
+                          Kinh độ
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Nhập kinh độ"
+                          className="form-control"
+                          id="user_longitude"
+                          required
+                          value={longitude}
+                          onChange={(e) => setLongitude(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label htmlFor="user_latitude" className="form-label">
+                          Vĩ độ
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Nhập vĩ độ"
+                          className="form-control"
+                          id="user_latitude"
+                          required
+                          value={latitude}
+                          onChange={(e) => setLatitude(e.target.value)}
+                        />
+                      </div>
                     </>
                   )}
                 </div>

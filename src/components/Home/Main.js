@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { listCategories } from "../../Redux/Actions/CategoryActions";
-import { listProducts } from "../../Redux/Actions/ProductActions";
+import React, {  } from "react";
+import { useSelector } from "react-redux";
 import DeliveryStatistics from "./DeliveryStatistics";
 import LatestOrder from "./LatestOrder";
 import PaidStatistics from "./PaidStatistics";
