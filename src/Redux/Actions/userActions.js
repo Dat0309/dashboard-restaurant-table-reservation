@@ -163,7 +163,6 @@ export const createUser =
           latitude: latitude,
           role: role
         };
-        console.log(userData);
         var data;
 
         await axios.post(

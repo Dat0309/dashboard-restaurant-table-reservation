@@ -100,11 +100,25 @@ export const createRestaurant =
                 const {
                     userLogin: { userInfo },
                 } = getState();
+
+                var restaurantData = {
+                    name: name,
+                    description: description,
+                    province: province,
+                    district: district,
+                    ward: ward,
+                    street: street,
+                    contact: contact,
+                    image: image,
+                    thumb: thumb,
+                    longitude: longitude,
+                    latitude: latitude
+                };
                 var data;
 
                 await axios.post(
                     `/api/restaurants/`,
-                    { name, description, province, district, ward, street, contact, image, thumb, longitude, latitude },
+                    restaurantData,
                     {
                         headers: {
                             Authorization: `Bearer ${userInfo.token}`,
@@ -144,7 +158,7 @@ export const editRestaurant = (id) => async (dispatch) => {
                     'Content-Type': 'application/json'
                 },
                 baseURL: 'https://smart-fooding.herokuapp.com'
-            }).then(res => res.data);
+            }).then(res => data = res.data);
         dispatch({ type: RESTAURANT_EDIT_SUCCESS, payload: data });
     } catch (error) {
         const message =

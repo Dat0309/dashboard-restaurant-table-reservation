@@ -53,7 +53,7 @@ const EditUserMain = (props) => {
 
         if (successUpdate) {
             dispatch({ type: USER_UPDATE_RESET });
-            toast.success("User Updated", ToastObjects);
+            toast.success("Cập nhật người dùng thành công!", ToastObjects);
         } else {
             if (!user.first_name || user._id !== userId) {
                 console.log("cant get user");

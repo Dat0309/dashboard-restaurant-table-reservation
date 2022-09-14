@@ -53,7 +53,7 @@ const EditProductMain = (props) => {
 
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
-      toast.success("Product Updated", ToastObjects);
+      toast.success("Cập nhật món ăn thành công", ToastObjects);
     } else {
       if (!product.name || product._id !== productId) {
         console.log("cant get product");

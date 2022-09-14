@@ -87,7 +87,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <NavLink
                 activeClassName="active"
-                className="menu-link disabled"
+                className="menu-link"
                 to="/restaurants"
               >
                 <i className="icon fas fa-store-alt"></i>
@@ -95,7 +95,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
 
-            <li className="menu-item">
+            {/* <li className="menu-item">
               <NavLink
                 activeClassName="active"
                 className="menu-link disabled"
@@ -115,7 +115,7 @@ const Sidebar = () => {
                 <i className="icon fas fa-usd-circle"></i>
                 <span className="text">Quản lý kho hàng</span>
               </NavLink>
-            </li>
+            </li> */}
           </ul>
           <br />
           <br />
