@@ -52,7 +52,7 @@ const AddRestaurantMain = () => {
       setLongitude("");
       setLatitude("");
     }
-  }, [restaurant, dispatch]);
+  }, [restaurant, dispatch, thumbs]);
 
   function handleOpenWidget() {
     var myWidget = window.cloudinary.createUploadWidget({
@@ -69,13 +69,15 @@ const AddRestaurantMain = () => {
   }
 
   function handleOpenWidgetThumb() {
+    var list = "";
     var myWidget = window.cloudinary.createUploadWidget({
       cloudName: 'devdaz',
       uploadPreset: 'mm9z4p5u'
     }, (error, result) => {
       if (!error && result && result.event === "success") {
         setThumbs((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
-        setThumb(result.info.url);
+        list+=result.info.url + ", ";
+        setThumb(list);
       }
     });
     //open widget

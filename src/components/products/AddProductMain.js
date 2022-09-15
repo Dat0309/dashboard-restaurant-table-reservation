@@ -25,6 +25,8 @@ const AddProductMain = () => {
   const [unit, setUnit] = useState("");
   const [menu_id, setRestaurat] = useState("")
 
+  const [images, setImages] = useState([]);
+
   const dispatch = useDispatch();
 
   const categoriesList = useSelector((state) => state.categoriesList);
@@ -51,6 +53,20 @@ const AddProductMain = () => {
       setPrice(0);
     }
   }, [product, dispatch]);
+
+  function handleOpenWidget() {
+    var myWidget = window.cloudinary.createUploadWidget({
+      cloudName: 'devdaz',
+      uploadPreset: 'mm9z4p5u'
+    }, (error, result) => {
+      if (!error && result && result.event === "success") {
+        setImages((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
+        setImage(result.info.url);
+      }
+    });
+    //open widget
+    myWidget.open();
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -199,7 +215,14 @@ const AddProductMain = () => {
                       required
                       onChange={(e) => setImage(e.target.value)}
                     />
-                    <input className="form-control mt-3" type="file" />
+                    <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidget()}>Upload files</button>
+                    <div className="card card-product-grid shadow-sm">
+                      {images.map((img) => (
+                        <div>
+                          <img alt="avatar" src={img.url} height={300} width={300} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
