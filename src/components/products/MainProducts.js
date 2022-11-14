@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Product from "./Product";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../../Redux/Actions/ProductActions";
+import { listProductByRestaurant } from "../../Redux/Actions/ProductActions";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 import { listCategories } from "../../Redux/Actions/CategoryActions";
@@ -17,11 +17,14 @@ const MainProducts = (props) => {
   const categoriesList = useSelector((state) => state.categoriesList);
   const { loadingCate, errorCate, categories } = categoriesList;
 
-  const productList = useSelector((state) => state.productList);
+  const productList = useSelector((state) => state.productByRestaurantId);
   const { loading, error, products } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
   const { error: errorDelete, success: successDelete } = productDelete;
+
+  const myRestaurant = useSelector((state) => state.restaurantOfOwners);
+  const { restaurant } = myRestaurant;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -33,14 +36,16 @@ const MainProducts = (props) => {
   };
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pagenumber));
+    dispatch(listProductByRestaurant(restaurant[0]._id));
     dispatch(listCategories());
-  }, [dispatch, successDelete, keyword, pagenumber]);
+  }, [dispatch, successDelete, keyword, pagenumber, restaurant]);
 
   return (
     <section className="content-main">
       <div className="content-header">
-        <h2 className="content-title">QUẢN LÝ MẶT HÀNG</h2>
+        <h2 className="content-title">
+          QUẢN LÝ MẶT HÀNG NHÀ HÀNG: {restaurant[0].name}
+        </h2>
         <div>
           <Link to="/addproduct" className="btn btn-primary">
             Tạo mới
@@ -67,7 +72,7 @@ const MainProducts = (props) => {
             <div className="col-lg-2 col-6 col-md-3">
               <select className="form-select">
                 {loadingCate ? (
-                  <div className='mb-5'>
+                  <div className="mb-5">
                     <Loading />
                   </div>
                 ) : errorCate ? (
@@ -80,7 +85,9 @@ const MainProducts = (props) => {
                     ))}
                   </>
                 ) : (
-                  <Message variant="alert-danger">Đã xảy ra lỗi, xin hãy tải lại trang</Message>
+                  <Message variant="alert-danger">
+                    Đã xảy ra lỗi, xin hãy tải lại trang
+                  </Message>
                 )}
               </select>
             </div>
@@ -102,15 +109,17 @@ const MainProducts = (props) => {
             <Loading />
           ) : error ? (
             <Message variant="alert-danger">{error}</Message>
-          ) : products.products ? (
+          ) : products ? (
             <div className="row">
               {/* Products */}
-              {products.products.map((product) => (
+              {products.map((product) => (
                 <Product product={product} key={product._id} />
               ))}
             </div>
           ) : (
-            <Message variant="alert-danger">Đã xảy ra lỗi, xin hãy tải lại trang</Message>
+            <Message variant="alert-danger">
+              Đã xảy ra lỗi, xin hãy tải lại trang
+            </Message>
           )}
 
           {/* <nav className="float-end mt-4" aria-label="Page navigation">

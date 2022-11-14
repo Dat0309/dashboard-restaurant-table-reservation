@@ -23,7 +23,7 @@ const AddProductMain = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [unit, setUnit] = useState("");
-  const [menu_id, setRestaurat] = useState("")
+  const [menu_id, setRestaurat] = useState("");
 
   const [images, setImages] = useState([]);
 
@@ -32,8 +32,8 @@ const AddProductMain = () => {
   const categoriesList = useSelector((state) => state.categoriesList);
   const { loadingCate, errorCate, categories } = categoriesList;
 
-  const restaurantList = useSelector((state) => state.restaurantList);
-  const { loadingRestaurant, errorRestaurant, restaurants } = restaurantList;
+  const myRestaurant = useSelector((state) => state.restaurantOfOwners);
+  const { restaurant } = myRestaurant;
 
   const productCreate = useSelector((state) => state.productCreate);
   const { loading, error, product } = productCreate;
@@ -55,22 +55,38 @@ const AddProductMain = () => {
   }, [product, dispatch]);
 
   function handleOpenWidget() {
-    var myWidget = window.cloudinary.createUploadWidget({
-      cloudName: 'devdaz',
-      uploadPreset: 'mm9z4p5u'
-    }, (error, result) => {
-      if (!error && result && result.event === "success") {
-        setImages((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
-        setImage(result.info.url);
+    var myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "devdaz",
+        uploadPreset: "mm9z4p5u",
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          setImages((prev) => [
+            ...prev,
+            { url: result.info.url, public_id: result.info.public_id },
+          ]);
+          setImage(result.info.url);
+        }
       }
-    });
+    );
     //open widget
     myWidget.open();
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProduct(name, categories_id, price, description, image, unit, menu_id));
+    dispatch(
+      createProduct(
+        name,
+        categories_id,
+        price,
+        description,
+        image,
+        unit,
+        menu_id
+      )
+    );
   };
 
   return (
@@ -114,12 +130,14 @@ const AddProductMain = () => {
                     <label htmlFor="product_category" className="form-label">
                       Loại mặt hàng
                     </label>
-                    <select className="form-select"
+                    <select
+                      className="form-select"
                       onChange={(e) => setCategory(e.target.value)}
                       value={categories_id}
-                      id="product_category">
+                      id="product_category"
+                    >
                       {loadingCate ? (
-                        <div className='mb-5'>
+                        <div className="mb-5">
                           <Loading />
                         </div>
                       ) : errorCate ? (
@@ -134,7 +152,9 @@ const AddProductMain = () => {
                           ))}
                         </>
                       ) : (
-                        <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng tải lại trang</Message>
+                        <Message variant="alert-danger">
+                          Đã xảy ra lỗi, vui lòng tải lại trang
+                        </Message>
                       )}
                     </select>
                   </div>
@@ -142,27 +162,22 @@ const AddProductMain = () => {
                     <label htmlFor="product_restaurant" className="form-label">
                       Nhà hàng
                     </label>
-                    <select className="form-select"
+                    <select
+                      className="form-select"
                       onChange={(e) => setRestaurat(e.target.value)}
                       value={menu_id}
-                      id="product_restaurant">
-                      {loadingRestaurant ? (
-                        <div className='mb-5'>
-                          <Loading />
-                        </div>
-                      ) : errorRestaurant ? (
-                        <Message variant="alert-danger">{error}</Message>
-                      ) : restaurants.restaurant ? (
+                      id="product_restaurant"
+                    >
+                      {restaurant ? (
                         <>
-                          <option>Chọn tên nhà hàng</option>
-                          {restaurants.restaurant.map((restaurant) => (
-                            <option value={restaurant._id}>
-                              {restaurant.name}
-                            </option>
-                          ))}
+                          <option value={restaurant._id}>
+                            {restaurant[0].name}
+                          </option>
                         </>
                       ) : (
-                        <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng tải lại trang</Message>
+                        <Message variant="alert-danger">
+                          Đã xảy ra lỗi, vui lòng tải lại trang
+                        </Message>
                       )}
                     </select>
                   </div>
@@ -215,11 +230,22 @@ const AddProductMain = () => {
                       required
                       onChange={(e) => setImage(e.target.value)}
                     />
-                    <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidget()}>Upload files</button>
+                    <button
+                      id="upload_widget"
+                      className="btn btn-primary"
+                      onClick={() => handleOpenWidget()}
+                    >
+                      Upload files
+                    </button>
                     <div className="card card-product-grid shadow-sm">
                       {images.map((img) => (
                         <div>
-                          <img alt="avatar" src={img.url} height={300} width={300} />
+                          <img
+                            alt="avatar"
+                            src={img.url}
+                            height={300}
+                            width={300}
+                          />
                         </div>
                       ))}
                     </div>

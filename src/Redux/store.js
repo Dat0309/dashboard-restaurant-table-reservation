@@ -1,12 +1,19 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { userCreateReducer, userEditReducer, userListReducer, userLoginReducer, userUpdateReducer } from "./Reducers/userReducers";
+import {
+  userCreateReducer,
+  userEditReducer,
+  userListReducer,
+  userLoginReducer,
+  userUpdateReducer,
+} from "./Reducers/userReducers";
 import {
   productCreateReducer,
   productDeleteReducer,
   productEditReducer,
   productListByCategoryIdReducer,
+  productListByRestaurantIdReducer,
   productListReducer,
   productUpdateReducer,
 } from "./Reducers/ProductReducers";
@@ -15,8 +22,23 @@ import {
   orderDetailsReducer,
   orderListReducer,
 } from "./Reducers/OrderReducres";
-import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryEditReducer, categoryListReducer, categoryUpdateReducer } from "./Reducers/CategoryReducers";
-import { restaurantCreateReducer, restaurantDeleteReducer, restaurantEditReducer, restaurantListByCategoryIdReducer, restaurantListReducer, restaurantUpdateReducer } from "./Reducers/RestaurantReducer";
+import {
+  categoryCreateReducer,
+  categoryDeleteReducer,
+  categoryDetailsReducer,
+  categoryEditReducer,
+  categoryListReducer,
+  categoryUpdateReducer,
+} from "./Reducers/CategoryReducers";
+import {
+  restaurantByOwners,
+  restaurantCreateReducer,
+  restaurantDeleteReducer,
+  restaurantEditReducer,
+  restaurantListByCategoryIdReducer,
+  restaurantListReducer,
+  restaurantUpdateReducer,
+} from "./Reducers/RestaurantReducer";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -26,6 +48,7 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   productList: productListReducer,
   productByCategortId: productListByCategoryIdReducer,
+  productByRestaurantId: productListByRestaurantIdReducer,
   productDelete: productDeleteReducer,
   productCreate: productCreateReducer,
   productEdit: productEditReducer,
@@ -37,6 +60,7 @@ const reducer = combineReducers({
   categoryEdit: categoryEditReducer,
   categoryUpdate: categoryUpdateReducer,
   restaurantList: restaurantListReducer,
+  restaurantOfOwners: restaurantByOwners,
   restaurantByCategortId: restaurantListByCategoryIdReducer,
   restaurantDelete: restaurantDeleteReducer,
   restaurantCreate: restaurantCreateReducer,
@@ -52,8 +76,16 @@ const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
+// my restaurant
+const userRestaurantFromLocalStorage = localStorage.getItem("userRestaurant")
+  ? JSON.parse(localStorage.getItem("userRestaurant"))
+  : null;
+
 const initialState = {
   userLogin: { userInfo: userInfoFromLocalStorage },
+  userRestaurant: {
+    restaurant: userRestaurantFromLocalStorage,
+  },
 };
 
 const middleware = [thunk];

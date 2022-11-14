@@ -1,4 +1,7 @@
 import {
+  RESTAURANT_BY_OWNERS_FAIL,
+  RESTAURANT_BY_OWNERS_REQUEST,
+  RESTAURANT_BY_OWNERS_SUCCESS,
   RESTAURANT_CREATE_FAIL,
   RESTAURANT_CREATE_REQUEST,
   RESTAURANT_CREATE_SUCCESS,
@@ -56,9 +59,9 @@ export const listRestaurant =
     }
   };
 
-export const listRestaurantByOwners = () => async (dispatch, getState) => {
+export const restaurantByOwners = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: RESTAURANT_LIST_REQUEST });
+    dispatch({ type: RESTAURANT_BY_OWNERS_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -76,7 +79,8 @@ export const listRestaurantByOwners = () => async (dispatch, getState) => {
       })
       .then((res) => (data = res.data));
 
-    dispatch({ type: RESTAURANT_LIST_SUCCESS, payload: data });
+    localStorage.setItem("userRestaurant", JSON.stringify(data));
+    dispatch({ type: RESTAURANT_BY_OWNERS_SUCCESS, payload: data });
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -86,7 +90,7 @@ export const listRestaurantByOwners = () => async (dispatch, getState) => {
       dispatch(logout());
     }
     dispatch({
-      type: RESTAURANT_LIST_FAIL,
+      type: RESTAURANT_BY_OWNERS_FAIL,
       payload: message,
     });
   }

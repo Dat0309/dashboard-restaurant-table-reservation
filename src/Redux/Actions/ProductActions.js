@@ -18,7 +18,45 @@ import {
 import axios from "axios";
 import { logout } from "./userActions";
 
-export const listProducts = (keyword = " ", pageNumber = " ") => async (dispatch, getState) => {
+export const listProducts =
+  (keyword = " ", pageNumber = " ") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: PRODUCT_LIST_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      var data;
+
+      await axios
+        .get(`/api/product?keyword=${keyword}&pageNumber=${pageNumber}`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          baseURL: "https://smart-fooding.herokuapp.com",
+        })
+        .then((res) => (data = res.data));
+
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
+      dispatch({
+        type: PRODUCT_LIST_FAIL,
+        payload: message,
+      });
+    }
+  };
+
+export const listProductByRestaurant = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
@@ -27,16 +65,16 @@ export const listProducts = (keyword = " ", pageNumber = " ") => async (dispatch
     } = getState();
     var data;
 
-    await axios.get(
-      `/api/product?keyword=${keyword}&pageNumber=${pageNumber}`, 
-      {
+    await axios
+      .get(`/api/product/menu-id/${id}`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        baseURL: 'https://smart-fooding.herokuapp.com'
-      }).then(res=> data = res.data);
+        baseURL: "https://smart-fooding.herokuapp.com",
+      })
+      .then((res) => (data = res.data));
 
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -63,16 +101,14 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    await axios.delete(
-      `/api/product/${id}`, 
-      {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        baseURL: 'https://smart-fooding.herokuapp.com'
-      });
+    await axios.delete(`/api/product/${id}`, {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      baseURL: "https://smart-fooding.herokuapp.com",
+    });
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
@@ -93,68 +129,66 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 // CREATE PRODUCT
 export const createProduct =
   (name, categories_id, price, description, image, unit, menu_id) =>
-    async (dispatch, getState) => {
-      try {
-        dispatch({ type: PRODUCT_CREATE_REQUEST });
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: PRODUCT_CREATE_REQUEST });
 
-        const {
-          userLogin: { userInfo },
-        } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-        var productData = {
-          name: name,
-          image: image,
-          categories_id: categories_id,
-          menu_id: menu_id,
-          description: description,
-          price: price,
-          unit: unit
-        };
-        var data;
+      var productData = {
+        name: name,
+        image: image,
+        categories_id: categories_id,
+        menu_id: menu_id,
+        description: description,
+        price: price,
+        unit: unit,
+      };
+      var data;
 
-        await axios.post(
-          `/api/product`,
-          productData,
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`,
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            baseURL: 'https://smart-fooding.herokuapp.com'
-          }
-        ).then(res=> data = res.data);
+      await axios
+        .post(`/api/product`, productData, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          baseURL: "https://smart-fooding.herokuapp.com",
+        })
+        .then((res) => (data = res.data));
 
-        dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
-      } catch (error) {
-        const message =
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message;
-        if (message === "Not authorized, token failed") {
-          dispatch(logout());
-        }
-        dispatch({
-          type: PRODUCT_CREATE_FAIL,
-          payload: message,
-        });
+      dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
       }
-    };
+      dispatch({
+        type: PRODUCT_CREATE_FAIL,
+        payload: message,
+      });
+    }
+  };
 
 // EDIT PRODUCT
 export const editProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_EDIT_REQUEST });
     var data;
-    await axios.get(
-      `/api/product/${id}`,
-      {
+    await axios
+      .get(`/api/product/${id}`, {
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        baseURL: 'https://smart-fooding.herokuapp.com'
-      }).then(res=>data = res.data);
+        baseURL: "https://smart-fooding.herokuapp.com",
+      })
+      .then((res) => (data = res.data));
     dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -182,18 +216,16 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
     var data;
 
-    await axios.put(
-      `/api/product/${product._id}`,
-      product,
-      {
+    await axios
+      .put(`/api/product/${product._id}`, product, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        baseURL: 'https://smart-fooding.herokuapp.com'
-      }
-    ).then(res=>data = res.data);
+        baseURL: "https://smart-fooding.herokuapp.com",
+      })
+      .then((res) => (data = res.data));
 
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
     dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
