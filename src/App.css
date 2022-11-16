@@ -815,7 +815,7 @@ ul.row-sm {
   overflow: hidden;
 }
 .rating-stars li.stars-active i {
-  color: #F0BB62;
+  color: #f0bb62;
 }
 .rating-stars.stars-lg img {
   height: 24px;
@@ -930,4 +930,49 @@ ul.row-sm {
   border: 0;
   text-transform: uppercase;
   font-size: 12px;
+}
+
+/* SINGLE RESTAURANT */
+.single-restaurant {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.single-image {
+  background-color: #f3fbf7;
+  margin-right: 20px;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.single-image img {
+  width: 90%;
+  height: 700px;
+  object-fit: contain;
+}
+
+.restaurant-name {
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 30px;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.restaurant-info {
+  width: 100%;
+}
+
+.restaurant-dtl {
+  margin-top: 20em;
+}
+
+.restaurant-dtl p {
+  line-height: 24px;
+  color: #7a7a7a;
 }

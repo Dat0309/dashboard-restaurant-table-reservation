@@ -35,7 +35,7 @@ export const restaurantListReducer = (state = { restaurants: [] }, action) => {
   }
 };
 
-export const restaurantByOwners = (state = { restaurants: [] }, action) => {
+export const restaurantByOwners = (state = { restaurant: [] }, action) => {
   switch (action.type) {
     case RESTAURANT_BY_OWNERS_REQUEST:
       return { loading: true, restaurant: [] };
