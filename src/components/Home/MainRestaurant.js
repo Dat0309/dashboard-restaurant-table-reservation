@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { listBookings } from "../../Redux/Actions/BookingAction";
 
 const MainRestaurant = (props) => {
+  const dispatch = useDispatch();
   const { restaurant } = props;
+
+  useEffect(() => {
+    dispatch(listBookings(restaurant._id));
+  }, [dispatch, restaurant]);
   return (
     <>
       <div className="container single-restaurant">

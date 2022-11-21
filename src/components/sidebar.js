@@ -105,6 +105,16 @@ const Sidebar = () => {
                   <span className="text">Thêm sản phẩm</span>
                 </NavLink>
               </li>
+              <li className="menu-item">
+                <NavLink
+                  activeClassName="active"
+                  className="menu-link"
+                  to="/bookings"
+                >
+                  <i className="icon fas fa-bags-shopping"></i>
+                  <span className="text">Quản lý lịch hẹn</span>
+                </NavLink>
+              </li>
             </ul>
             <br />
             <br />

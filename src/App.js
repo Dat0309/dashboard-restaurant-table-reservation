@@ -21,6 +21,8 @@ import AddUser from "./screens/AddUser";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import RestaurantEditScreen from "./screens/RestaurantEditScreen";
 import AddRestaurant from "./screens/AddRestaurant";
+import BookingScreen from "./screens/BookingScreen";
+import BookingDetailScreen from "./screens/BookingDetailScreen";
 function App() {
   const dispatch = useDispatch();
 
@@ -39,17 +41,36 @@ function App() {
           <Route path="/search/:keyword" component={ProductScreen} exact />
           <Route path="/page/:pagenumber" component={ProductScreen} exact />
           <PrivateRouter path="/products" component={ProductScreen} />
-          <PrivateRouter path="/product/:id/edit" component={ProductEditScreen} />
-          <Route path="/search-restaurant/:keyword" component={RestaurantScreen} exact />
-          <Route path="/page-restaurant/:pagenumber" component={RestaurantScreen} exact />
+          <PrivateRouter
+            path="/product/:id/edit"
+            component={ProductEditScreen}
+          />
+          <Route
+            path="/search-restaurant/:keyword"
+            component={RestaurantScreen}
+            exact
+          />
+          <Route
+            path="/page-restaurant/:pagenumber"
+            component={RestaurantScreen}
+            exact
+          />
           <PrivateRouter path="/restaurants" component={RestaurantScreen} />
-          <PrivateRouter path="/restaurant/:id/edit" component={RestaurantEditScreen} />
+          <PrivateRouter
+            path="/restaurant/:id/edit"
+            component={RestaurantEditScreen}
+          />
           <PrivateRouter path="/categories" component={CategoriesScreen} />
-          <PrivateRouter path="/category/:id/edit" component={CategoryEditScreen} />
+          <PrivateRouter
+            path="/category/:id/edit"
+            component={CategoryEditScreen}
+          />
           <PrivateRouter path="/addproduct" component={AddProduct} />
           <PrivateRouter path="/addrestaurant" component={AddRestaurant} />
           <PrivateRouter path="/orders" component={OrderScreen} />
           <PrivateRouter path="/order/:id" component={OrderDetailScreen} />
+          <PrivateRouter path="/bookings" component={BookingScreen} />
+          <PrivateRouter path="/booking/:id" component={BookingDetailScreen} />
           <PrivateRouter path="/" component={HomeScreen} exact />
           <PrivateRouter path="/users" component={UsersScreen} />
           <PrivateRouter path="/user/:id/edit" component={UserEditScreen} />

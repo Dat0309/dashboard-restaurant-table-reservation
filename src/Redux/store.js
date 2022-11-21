@@ -39,6 +39,10 @@ import {
   restaurantListReducer,
   restaurantUpdateReducer,
 } from "./Reducers/RestaurantReducer";
+import {
+  bookingDetailReducer,
+  bookingListReducer,
+} from "./Reducers/BookingReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -69,6 +73,8 @@ const reducer = combineReducers({
   orderList: orderListReducer,
   orderDetails: orderDetailsReducer,
   orderDeliver: orderDeliveredReducer,
+  bookingList: bookingListReducer,
+  bookingDetails: bookingDetailReducer,
 });
 
 // login
