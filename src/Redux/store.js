@@ -42,6 +42,7 @@ import {
 import {
   bookingDetailReducer,
   bookingListReducer,
+  bookingPaidReducer,
 } from "./Reducers/BookingReducers";
 
 const reducer = combineReducers({
@@ -75,6 +76,7 @@ const reducer = combineReducers({
   orderDeliver: orderDeliveredReducer,
   bookingList: bookingListReducer,
   bookingDetails: bookingDetailReducer,
+  bookingPaid: bookingPaidReducer,
 });
 
 // login

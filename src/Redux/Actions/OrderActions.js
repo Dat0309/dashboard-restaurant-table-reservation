@@ -22,17 +22,16 @@ export const listOrders = () => async (dispatch, getState) => {
 
     var data;
 
-    await axios.get(
-      `/api/orders/all`,
-      {
+    await axios
+      .get(`/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        baseURL: 'https://smart-fooding.herokuapp.com'
-      }
-    ).then(res => data = res.data);
+        baseURL: "https://smart-fooding.herokuapp.com",
+      })
+      .then((res) => (data = res.data));
 
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -60,16 +59,16 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
     } = getState();
     var data;
 
-    await axios.get(
-      `/api/orders/${id}`, 
-      {
+    await axios
+      .get(`/api/orders/${id}`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        baseURL: 'https://smart-fooding.herokuapp.com'
-      }).then(res=> data = res.data);
+        baseURL: "https://smart-fooding.herokuapp.com",
+      })
+      .then((res) => (data = res.data));
 
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -103,10 +102,10 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
       {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        baseURL: 'https://smart-fooding.herokuapp.com'
+        baseURL: "https://smart-fooding.herokuapp.com",
       }
     );
     dispatch({ type: ORDER_DELIVERED_SUCCESS, payload: data });

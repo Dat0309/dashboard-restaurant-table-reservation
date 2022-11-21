@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 import moment from "moment";
-import { getBookingDetails } from "../../Redux/Actions/BookingAction";
+import {
+  getBookingDetails,
+  paidBooking,
+} from "../../Redux/Actions/BookingAction";
 import BookingDetailInfo from "./BookingDetailInfo";
 import BookingDetailProducts from "./BookingDetailProducts";
 
@@ -12,12 +15,19 @@ const BookingDetailmain = (props) => {
   const { bookingId } = props;
   const dispatch = useDispatch();
 
-  const bookingDetails = useSelector((state) => state.bookingDetails);
-  const { loading, error, booking } = bookingDetails;
+  const bookingDetail = useSelector((state) => state.bookingDetails);
+  const { loading, error, booking } = bookingDetail;
+
+  const isPaid = useSelector((state) => state.bookingPaid);
+  const { loading: loadingPaid, success: successPaid } = isPaid;
 
   useEffect(() => {
     dispatch(getBookingDetails(bookingId));
-  }, [dispatch, bookingId]);
+  }, [dispatch, bookingId, successPaid]);
+
+  const paidHandler = () => {
+    dispatch(paidBooking(booking.booking));
+  };
 
   return (
     <section className="content-main">
@@ -31,7 +41,7 @@ const BookingDetailmain = (props) => {
         <Loading />
       ) : error ? (
         <Message variant="alert-danger">{error}</Message>
-      ) : (
+      ) : booking ? (
         <div className="card">
           <header className="card-header p-3 Header-green">
             <div className="row align-items-center ">
@@ -61,33 +71,38 @@ const BookingDetailmain = (props) => {
             <div className="row">
               <div className="col-lg-9">
                 <div className="table-responsive">
-                  <BookingDetailProducts booking={booking} loading={loading} />
+                  <BookingDetailProducts
+                    booking={booking}
+                    loading={loading}
+                    error={error}
+                  />
                 </div>
               </div>
               {/* Payment Info */}
-              {/* <div className="col-lg-3">
+              <div className="col-lg-3">
                 <div className="box shadow-sm bg-light">
-                  {booking.is_delivered ? (
+                  {booking.booking.is_paid ? (
                     <button className="btn btn-success col-12">
-                      ĐÃ VẬN CHUYỂN VÀO ({" "}
-                      {moment(booking.delivere_at).format("MMM Do YY")})
+                      Đã Thanh Toán
                     </button>
                   ) : (
                     <>
-                      {loadingDelivered && <Loading />}
+                      {loadingPaid && <Loading />}
                       <button
-                        onClick={deliverHandler}
                         className="btn btn-dark col-12"
+                        onClick={paidHandler}
                       >
-                        ĐÁNH DẤU ĐÃ VẬN CHUYỂN
+                        ĐÁNH DẤU ĐÃ THANH TOÁN
                       </button>
                     </>
                   )}
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
+      ) : (
+        <></>
       )}
     </section>
   );

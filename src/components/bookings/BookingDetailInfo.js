@@ -12,7 +12,9 @@ const BookingDetailInfo = (props) => {
           <div className="text">
             <h6 className="mb-1">Khách hàng</h6>
             <p className="mb-1">
-              <a href={`mailto:${booking.user.email}`}>{booking.user.email}</a>
+              <a href={`${booking.booking.user_name}`}>
+                {booking.booking.user_name}
+              </a>
             </p>
           </div>
         </article>
@@ -25,7 +27,7 @@ const BookingDetailInfo = (props) => {
           <div className="text">
             <h6 className="mb-1">Thông tin đặt bàn</h6>
             <p className="mb-1">
-              <br /> Phương thức thanh toán: {booking.payment_method}
+              <br /> Phương thức thanh toán: {booking.booking.payment_method}
             </p>
           </div>
         </article>
@@ -37,7 +39,9 @@ const BookingDetailInfo = (props) => {
           </span>
           <div className="text">
             <h6 className="mb-1">Thời gian</h6>
-            <p className="mb-1">{booking.time + ", " + booking.date + ", "}</p>
+            <p className="mb-1">
+              {booking.booking.time + ", " + booking.booking.date + ", "}
+            </p>
           </div>
         </article>
       </div>

@@ -52,8 +52,10 @@ const BookingMain = () => {
               <Loading />
             ) : error ? (
               <Message variant="alert-danger">{error}</Message>
+            ) : bookings ? (
+              <Bookings bookings={bookings.bookings} />
             ) : (
-              <Bookings orders={bookings} />
+              <></>
             )}
           </div>
         </div>

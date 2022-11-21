@@ -1,18 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Message from "../LoadingError/Error";
 
 const BookingDetailProducts = (props) => {
-  const { booking, loading } = props;
+  const { booking, loading, error } = props;
 
   if (!loading) {
     // Calculate Price
-    const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2);
-    };
-
-    booking.itemsPrice = addDecimals(
-      booking.bookingItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-    );
+    // const addDecimals = (num) => {
+    //   return (Math.round(num * 100) / 100).toFixed(2);
+    // };
+    // booking.itemsPrice = addDecimals(
+    //   booking.bookingItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    // );
   }
 
   return (
@@ -28,26 +28,34 @@ const BookingDetailProducts = (props) => {
         </tr>
       </thead>
       <tbody>
-        {booking.bookingItems.map((item, index) => (
-          <tr key={index}>
-            <td>
-              <Link className="itemside" to="#">
-                <div className="left">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    style={{ width: "40px", height: "40px" }}
-                    className="img-xs"
-                  />
-                </div>
-                <div className="info">{item.name}</div>
-              </Link>
-            </td>
-            <td>{item.price}Đ</td>
-            <td>{item.qty} </td>
-            <td className="text-end"> {item.qty * item.price}Đ</td>
-          </tr>
-        ))}
+        {loading ? (
+          <loading />
+        ) : error ? (
+          <Message variant="alert-danger">{error}</Message>
+        ) : booking ? (
+          booking.booking.booking_items.map((item, index) => (
+            <tr key={index}>
+              <td>
+                <Link className="itemside" to="#">
+                  <div className="left">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={{ width: "40px", height: "40px" }}
+                      className="img-xs"
+                    />
+                  </div>
+                  <div className="info">{item.name}</div>
+                </Link>
+              </td>
+              <td>{item.price}Đ</td>
+              <td>{item.qty} </td>
+              <td className="text-end"> {item.qty * item.price}Đ</td>
+            </tr>
+          ))
+        ) : (
+          <></>
+        )}
 
         <tr>
           <td colSpan="4">

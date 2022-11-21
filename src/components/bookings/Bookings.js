@@ -9,7 +9,7 @@ const Bookings = (props) => {
       <thead>
         <tr>
           <th scope="col">Khách hàng</th>
-          <th scope="col">Email</th>
+          <th scope="col">Bàn</th>
           <th scope="col">Tổng tiền</th>
           <th scope="col">Thanh toán</th>
           <th scope="col">Ngày đặt</th>
@@ -22,9 +22,9 @@ const Bookings = (props) => {
         {bookings.map((booking) => (
           <tr key={booking._id}>
             <td>
-              <b>{booking.user.name}</b>
+              <b>{booking.user_name}</b>
             </td>
-            <td>{booking.user.email}</td>
+            <td>{booking.table_code}</td>
             <td>{booking.total_price}Đ</td>
             <td>
               {booking.is_paid ? (
