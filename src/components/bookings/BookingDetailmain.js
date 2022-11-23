@@ -10,6 +10,7 @@ import {
 } from "../../Redux/Actions/BookingAction";
 import BookingDetailInfo from "./BookingDetailInfo";
 import BookingDetailProducts from "./BookingDetailProducts";
+import { paidTable } from "../../Redux/Actions/TableAction";
 
 const BookingDetailmain = (props) => {
   const { bookingId } = props;
@@ -27,6 +28,7 @@ const BookingDetailmain = (props) => {
 
   const paidHandler = () => {
     dispatch(paidBooking(booking.booking));
+    dispatch(paidTable(booking.booking.table_id));
   };
 
   return (

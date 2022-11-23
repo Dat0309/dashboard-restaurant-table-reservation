@@ -14,7 +14,6 @@ const ToastObjects = {
 };
 
 const CreateCategory = () => {
-
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
 
@@ -37,6 +36,26 @@ const CreateCategory = () => {
     dispatch(createCategory(name, image));
   };
 
+  function handleOpenWidget() {
+    var myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "devdaz",
+        uploadPreset: "mm9z4p5u",
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          setImage((prev) => [
+            ...prev,
+            { url: result.info.url, public_id: result.info.public_id },
+          ]);
+          setImage(result.info.url);
+        }
+      }
+    );
+    //open widget
+    myWidget.open();
+  }
+
   return (
     <>
       <div className="col-md-12 col-lg-4">
@@ -58,7 +77,7 @@ const CreateCategory = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Hình ảnh danh mục</label>
+            <label className="form-label">Hình ảnh</label>
             <input
               className="form-control"
               type="text"
@@ -67,7 +86,13 @@ const CreateCategory = () => {
               required
               onChange={(e) => setImage(e.target.value)}
             />
-            <input className="form-control" type="file" />
+            <button
+              id="upload_widget"
+              className="btn btn-primary"
+              onClick={() => handleOpenWidget()}
+            >
+              Thêm ảnh
+            </button>
           </div>
 
           <div className="d-grid">

@@ -7,6 +7,7 @@ import { createRestaurant } from "../../Redux/Actions/RestaurantActions";
 import Toast from "../LoadingError/Toast";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
+import { listUser } from "../../Redux/Actions/userActions";
 
 const ToastObjects = {
   pauseOnFocusLoss: false,
@@ -15,6 +16,7 @@ const ToastObjects = {
   autoClose: 2000,
 };
 const AddRestaurantMain = () => {
+  const [owner, setOwner] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [province, setProvince] = useState("");
@@ -30,16 +32,20 @@ const AddRestaurantMain = () => {
   const [images, setImages] = useState([]);
   const [thumbs, setThumbs] = useState([]);
 
-
   const dispatch = useDispatch();
 
   const restaurantCreate = useSelector((state) => state.restaurantCreate);
   const { loading, error, restaurant } = restaurantCreate;
 
+  const owners = useSelector((state) => state.userList);
+  const { loading: loadingUser, error: errorUser, users } = owners;
+
   useEffect(() => {
+    dispatch(listUser());
     if (restaurant) {
       toast.success("Thêm nhà hàng thành công", ToastObjects);
       dispatch({ type: RESTAURANT_CREATE_RESET });
+      setOwner("");
       setName("");
       setDescription("");
       setProvince("");
@@ -55,38 +61,65 @@ const AddRestaurantMain = () => {
   }, [restaurant, dispatch, thumbs]);
 
   function handleOpenWidget() {
-    var myWidget = window.cloudinary.createUploadWidget({
-      cloudName: 'devdaz',
-      uploadPreset: 'mm9z4p5u'
-    }, (error, result) => {
-      if (!error && result && result.event === "success") {
-        setImages((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
-        setImage(result.info.url);
+    var myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "devdaz",
+        uploadPreset: "mm9z4p5u",
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          setImages((prev) => [
+            ...prev,
+            { url: result.info.url, public_id: result.info.public_id },
+          ]);
+          setImage(result.info.url);
+        }
       }
-    });
+    );
     //open widget
     myWidget.open();
   }
 
   function handleOpenWidgetThumb() {
     var list = "";
-    var myWidget = window.cloudinary.createUploadWidget({
-      cloudName: 'devdaz',
-      uploadPreset: 'mm9z4p5u'
-    }, (error, result) => {
-      if (!error && result && result.event === "success") {
-        setThumbs((prev) => [...prev, { url: result.info.url, public_id: result.info.public_id }]);
-        list+=result.info.url + ", ";
-        setThumb(list);
+    var myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: "devdaz",
+        uploadPreset: "mm9z4p5u",
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          setThumbs((prev) => [
+            ...prev,
+            { url: result.info.url, public_id: result.info.public_id },
+          ]);
+          list += result.info.url + ", ";
+          setThumb(list);
+        }
       }
-    });
+    );
     //open widget
     myWidget.open();
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createRestaurant(name, description, province, district, ward, street, contact, image, thumb, longitude, latitude));
+    dispatch(
+      createRestaurant(
+        owner,
+        name,
+        description,
+        province,
+        district,
+        ward,
+        street,
+        contact,
+        image,
+        thumb,
+        longitude,
+        latitude
+      )
+    );
   };
 
   return (
@@ -112,6 +145,36 @@ const AddRestaurantMain = () => {
                 <div className="card-body">
                   {error && <Message variant="alert-danger">{error}</Message>}
                   {loading && <Loading />}
+                  <div className="mb-4">
+                    <label htmlFor="restaurant_owner" className="form-label">
+                      Tài khoản quản lý
+                    </label>
+                    <select
+                      className="form-select"
+                      onChange={(e) => setOwner(e.target.value)}
+                      value={owner}
+                      id="restaurant_owner"
+                    >
+                      {loadingUser ? (
+                        <div className="mb-5">
+                          <Loading />
+                        </div>
+                      ) : errorUser ? (
+                        <Message variant="alert-danger">{error}</Message>
+                      ) : users ? (
+                        <>
+                          <option>Chọn tài khoản</option>
+                          {users.users.map((user) => (
+                            <option value={user._id}>{user.username}</option>
+                          ))}
+                        </>
+                      ) : (
+                        <Message variant="alert-danger">
+                          Đã xảy ra lỗi, vui lòng tải lại trang
+                        </Message>
+                      )}
+                    </select>
+                  </div>
                   <div className="mb-4">
                     <label htmlFor="restaurant_title" className="form-label">
                       Tên nhà hàng
@@ -218,11 +281,22 @@ const AddRestaurantMain = () => {
                       required
                       onChange={(e) => setImage(e.target.value)}
                     />
-                    <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidget()}>Upload files</button>
+                    <button
+                      id="upload_widget"
+                      className="btn btn-primary"
+                      onClick={() => handleOpenWidget()}
+                    >
+                      Chọn hình ảnh
+                    </button>
                     <div className="card card-product-grid shadow-sm">
                       {images.map((img) => (
                         <div>
-                          <img alt="avatar" src={img.url} height={300} width={300} />
+                          <img
+                            alt="avatar"
+                            src={img.url}
+                            height={300}
+                            width={300}
+                          />
                         </div>
                       ))}
                     </div>
@@ -237,17 +311,31 @@ const AddRestaurantMain = () => {
                       required
                       onChange={(e) => setThumb(e.target.value)}
                     />
-                    <button id="upload_widget" className="btn btn-primary" onClick={() => handleOpenWidgetThumb()}>Upload files</button>
+                    <button
+                      id="upload_widget"
+                      className="btn btn-primary"
+                      onClick={() => handleOpenWidgetThumb()}
+                    >
+                      Chọn ảnh bìa
+                    </button>
                     <div className="card card-product-grid shadow-sm">
                       {thumbs.map((img) => (
                         <div>
-                          <img alt="thumb" src={img.url} height={300} width={600} />
+                          <img
+                            alt="thumb"
+                            src={img.url}
+                            height={300}
+                            width={600}
+                          />
                         </div>
                       ))}
                     </div>
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="restaurant_longitude" className="form-label">
+                    <label
+                      htmlFor="restaurant_longitude"
+                      className="form-label"
+                    >
                       Kinh độ
                     </label>
                     <input

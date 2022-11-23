@@ -6,15 +6,20 @@ import Loading from "../LoadingError/Loading";
 import CategoryItem from "./CategoryItem";
 
 const CategoriesTable = () => {
-
   const dispatch = useDispatch();
 
   const categoriesList = useSelector((state) => state.categoriesList);
   const { loading, error, categories } = categoriesList;
 
+  const categoriesDelete = useSelector((state) => state.categoryDelete);
+  const { success: successDelete } = categoriesDelete;
+
+  const categoryCreate = useSelector((state) => state.categoryCreate);
+  const { category } = categoryCreate;
+
   useEffect(() => {
     dispatch(listCategories());
-  }, [dispatch]);
+  }, [dispatch, category, successDelete]);
   return (
     <div className="col-md-12 col-lg-8">
       <table className="table">
@@ -34,85 +39,28 @@ const CategoriesTable = () => {
         {/* Table Data */}
         <tbody>
           {loading ? (
-            <div className='mb-5'>
+            <div className="mb-5">
               <Loading />
             </div>
           ) : error ? (
             <Message variant="alert-danger">{error}</Message>
-          ) : categories? (
+          ) : categories ? (
             <>
               {categories.map((category) => (
                 <tr>
-                  <CategoryItem id={category._id} categoryName={category.name} description={category.description}/>
+                  <CategoryItem
+                    id={category._id}
+                    categoryName={category.name}
+                    description={category.description}
+                  />
                 </tr>
               ))}
             </>
-          ) : <Message variant="alert-danger">Đã xảy ra lỗi, vui lòng làm mới trang</Message>}
-
-          {/* <tr>
-            <td>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" />
-              </div>
-            </td>
-            <td>2</td>
-            <td>
-              <b>Women fashion</b>
-            </td>
-            <td>Fashions for Women</td>
-
-            <td className="text-end">
-              <div className="dropdown">
-                <Link
-                  to="#"
-                  data-bs-toggle="dropdown"
-                  className="btn btn-light"
-                >
-                  <i className="fas fa-ellipsis-h"></i>
-                </Link>
-                <div className="dropdown-menu">
-                  <Link className="dropdown-item" to="#">
-                    Edit info
-                  </Link>
-                  <Link className="dropdown-item text-danger" to="#">
-                    Delete
-                  </Link>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" />
-              </div>
-            </td>
-            <td>3</td>
-            <td>
-              <b>Kids clothes</b>
-            </td>
-            <td>Clothes for kids</td>
-
-            <td className="text-end">
-              <div className="dropdown">
-                <Link
-                  to="#"
-                  data-bs-toggle="dropdown"
-                  className="btn btn-light"
-                >
-                  <i className="fas fa-ellipsis-h"></i>
-                </Link>
-                <div className="dropdown-menu">
-                  <Link className="dropdown-item" to="#">
-                    Edit info
-                  </Link>
-                  <Link className="dropdown-item text-danger" to="#">
-                    Delete
-                  </Link>
-                </div>
-              </div>
-            </td>
-          </tr> */}
+          ) : (
+            <Message variant="alert-danger">
+              Đã xảy ra lỗi, vui lòng làm mới trang
+            </Message>
+          )}
         </tbody>
       </table>
     </div>

@@ -63,13 +63,13 @@ const BookingDetailProducts = (props) => {
               <dl className="dlist">
                 <dt>Thành tiền:</dt>
                 <dd>
-                  <b className="h5">{booking.total_price}Đ</b>
+                  <b className="h5">{booking.booking.total_price}Đ</b>
                 </dd>
               </dl>
               <dl className="dlist">
                 <dt className="text-muted">Tình trạng:</dt>
                 <dd>
-                  {booking.isPaid ? (
+                  {booking.booking.is_paid ? (
                     <span className="badge rounded-pill alert alert-success text-success">
                       Đã thanh toán
                     </span>

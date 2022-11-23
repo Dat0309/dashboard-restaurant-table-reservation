@@ -23,6 +23,9 @@ import RestaurantEditScreen from "./screens/RestaurantEditScreen";
 import AddRestaurant from "./screens/AddRestaurant";
 import BookingScreen from "./screens/BookingScreen";
 import BookingDetailScreen from "./screens/BookingDetailScreen";
+import TableScreen from "./screens/TableScreen";
+import TableEditScreen from "./screens/tableEditScreen";
+import AddTable from "./screens/addTableScreen";
 function App() {
   const dispatch = useDispatch();
 
@@ -41,10 +44,12 @@ function App() {
           <Route path="/search/:keyword" component={ProductScreen} exact />
           <Route path="/page/:pagenumber" component={ProductScreen} exact />
           <PrivateRouter path="/products" component={ProductScreen} />
+          <PrivateRouter path="/tables" component={TableScreen} />
           <PrivateRouter
             path="/product/:id/edit"
             component={ProductEditScreen}
           />
+          <PrivateRouter path="/table/:id/edit" component={TableEditScreen} />
           <Route
             path="/search-restaurant/:keyword"
             component={RestaurantScreen}
@@ -66,6 +71,7 @@ function App() {
             component={CategoryEditScreen}
           />
           <PrivateRouter path="/addproduct" component={AddProduct} />
+          <PrivateRouter path="/addtable" component={AddTable} />
           <PrivateRouter path="/addrestaurant" component={AddRestaurant} />
           <PrivateRouter path="/orders" component={OrderScreen} />
           <PrivateRouter path="/order/:id" component={OrderDetailScreen} />

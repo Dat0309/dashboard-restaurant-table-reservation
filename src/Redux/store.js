@@ -44,6 +44,15 @@ import {
   bookingListReducer,
   bookingPaidReducer,
 } from "./Reducers/BookingReducers";
+import {
+  tableCreateReducer,
+  tableDeleteReducer,
+  tableEditReducer,
+  tableListByCategoryIdReducer,
+  tableListByRestaurantIdReducer,
+  tableListReducer,
+  tableUpdateReducer,
+} from "./Reducers/TableReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -77,6 +86,13 @@ const reducer = combineReducers({
   bookingList: bookingListReducer,
   bookingDetails: bookingDetailReducer,
   bookingPaid: bookingPaidReducer,
+  tableList: tableListReducer,
+  tableByCategortId: tableListByCategoryIdReducer,
+  tableByRestaurantId: tableListByRestaurantIdReducer,
+  tableDelete: tableDeleteReducer,
+  tableCreate: tableCreateReducer,
+  tableEdit: tableEditReducer,
+  tableUpdate: tableUpdateReducer,
 });
 
 // login

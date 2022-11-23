@@ -23,7 +23,6 @@ const AddProductMain = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [unit, setUnit] = useState("");
-  const [menu_id, setRestaurat] = useState("");
 
   const [images, setImages] = useState([]);
 
@@ -34,6 +33,8 @@ const AddProductMain = () => {
 
   const myRestaurant = useSelector((state) => state.restaurantOfOwners);
   const { restaurant } = myRestaurant;
+
+  const [menu_id, setRestaurat] = useState(restaurant[0]._id);
 
   const productCreate = useSelector((state) => state.productCreate);
   const { loading, error, product } = productCreate;
@@ -170,7 +171,7 @@ const AddProductMain = () => {
                     >
                       {restaurant ? (
                         <>
-                          <option value={restaurant._id}>
+                          <option value={restaurant[0]._id}>
                             {restaurant[0].name}
                           </option>
                         </>

@@ -133,6 +133,7 @@ export const deleteRestaurant = (id) => async (dispatch, getState) => {
 // CREATE RESTAURANT
 export const createRestaurant =
   (
+    owner,
     name,
     description,
     province,
@@ -154,6 +155,7 @@ export const createRestaurant =
       } = getState();
 
       var restaurantData = {
+        owners: owner,
         name: name,
         description: description,
         province: province,
