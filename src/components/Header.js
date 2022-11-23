@@ -73,7 +73,7 @@ const Header = () => {
           </li>
           <li className="nav-item">
             <Link className="nav-link" to="#">
-              VietNam
+              Việt Nam
             </Link>
           </li>
           <li className="dropdown nav-item">
