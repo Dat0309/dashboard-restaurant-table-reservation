@@ -60,7 +60,7 @@ const MainProducts = (props) => {
               <form onSubmit={submitHandler} className="input-group">
                 <input
                   type="search"
-                  placeholder="Tìm kiếm mặt hàng, nguòi yêu, siêu em gái..."
+                  placeholder="Tìm kiếm mặt hàng, người yêu, siêu em gái..."
                   className="form-control p-2"
                   onChange={(e) => setKeyword(e.target.value)}
                 />
