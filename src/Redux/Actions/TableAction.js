@@ -35,7 +35,7 @@ export const listTables = () => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -72,7 +72,7 @@ export const listTableByRestaurant = (id) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -106,7 +106,7 @@ export const deleteTable = (id) => async (dispatch, getState) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      baseURL: "https://smart-fooding.herokuapp.com",
+      baseURL: "https://backend-foodies-v2-drx1.vercel.app",
     });
 
     dispatch({ type: TABLE_DELETE_SUCCESS });
@@ -148,7 +148,7 @@ export const createTable =
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          baseURL: "https://smart-fooding.herokuapp.com",
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
         })
         .then((res) => (data = res.data));
 
@@ -178,7 +178,7 @@ export const editTable = (id) => async (dispatch) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -214,7 +214,7 @@ export const updateTable = (table) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -237,22 +237,70 @@ export const updateTable = (table) => async (dispatch, getState) => {
 
 export const paidTable = (id) => async (dispatch, getState) => {
   try {
+    dispatch({ type: TABLE_UPDATE_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    var data;
+
+    await axios
+      .put(
+        `/api/tables/paid/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
+        }
+      )
+      .then((res) => {
+        data = res.data;
+      });
+    dispatch({ type: TABLE_UPDATE_SUCCESS, payload: data });
+    dispatch({ type: TABLE_EDIT_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: TABLE_UPDATE_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const statusTable = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: TABLE_UPDATE_REQUEST });
     const {
       userLogin: { userInfo },
     } = getState();
 
-    await axios.put(
-      `/api/tables/paid/${id}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        baseURL: "https://smart-fooding.herokuapp.com",
-      }
-    );
+    var data;
+
+    await axios
+      .put(
+        `/api/tables/status/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
+        }
+      )
+      .then((res) => (data = res.data));
+    dispatch({ type: TABLE_UPDATE_SUCCESS, payload: data });
+    dispatch({ type: TABLE_EDIT_SUCCESS, payload: data });
   } catch (error) {
     const message =
       error.response && error.response.data.message

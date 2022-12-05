@@ -36,7 +36,7 @@ export const listProducts =
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          baseURL: "https://smart-fooding.herokuapp.com",
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
         })
         .then((res) => (data = res.data));
 
@@ -72,7 +72,7 @@ export const listProductByRestaurant = (id) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -107,7 +107,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      baseURL: "https://smart-fooding.herokuapp.com",
+      baseURL: "https://backend-foodies-v2-drx1.vercel.app",
     });
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
@@ -155,7 +155,7 @@ export const createProduct =
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          baseURL: "https://smart-fooding.herokuapp.com",
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
         })
         .then((res) => (data = res.data));
 
@@ -186,7 +186,7 @@ export const editProduct = (id) => async (dispatch) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
     dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
@@ -223,7 +223,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 

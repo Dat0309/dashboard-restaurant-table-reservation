@@ -29,7 +29,7 @@ export const listOrders = () => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -66,7 +66,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -105,7 +105,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       }
     );
     dispatch({ type: ORDER_DELIVERED_SUCCESS, payload: data });

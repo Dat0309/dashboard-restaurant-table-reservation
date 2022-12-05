@@ -29,7 +29,7 @@ export const listBookings = (id) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -65,7 +65,7 @@ export const getBookingDetails = (id) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
@@ -103,7 +103,7 @@ export const paidBooking = (booking) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       }
     );
     dispatch({ type: BOOKING_PAID_SUCCESS, payload: data });

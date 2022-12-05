@@ -45,7 +45,7 @@ export const login = (username, password) => async (dispatch) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => {
         data = res.data;
@@ -111,7 +111,7 @@ export const listUser =
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          baseURL: "https://smart-fooding.herokuapp.com",
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
         })
         .then((res) => (data = res.data));
       console.log(data);
@@ -184,7 +184,7 @@ export const createUser =
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          baseURL: "https://smart-fooding.herokuapp.com",
+          baseURL: "https://backend-foodies-v2-drx1.vercel.app",
         })
         .then((res) => (data = res.data));
 
@@ -221,7 +221,7 @@ export const editUser = (id) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
     dispatch({ type: USER_EDIT_SUCCESS, payload: data });
@@ -258,7 +258,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        baseURL: "https://smart-fooding.herokuapp.com",
+        baseURL: "https://backend-foodies-v2-drx1.vercel.app",
       })
       .then((res) => (data = res.data));
 
