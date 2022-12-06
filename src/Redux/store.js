@@ -53,6 +53,13 @@ import {
   tableListReducer,
   tableUpdateReducer,
 } from "./Reducers/TableReducers";
+import {
+  adCreateReducer,
+  adDeleteReducer,
+  adEditReducer,
+  adListReducer,
+  adUpdateReducer,
+} from "./Reducers/AdReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -93,6 +100,11 @@ const reducer = combineReducers({
   tableCreate: tableCreateReducer,
   tableEdit: tableEditReducer,
   tableUpdate: tableUpdateReducer,
+  adList: adListReducer,
+  adDelete: adDeleteReducer,
+  adCreate: adCreateReducer,
+  adEdit: adEditReducer,
+  adUpdate: adUpdateReducer,
 });
 
 // login
